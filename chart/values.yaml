@@ -1,0 +1,40 @@
+#### DevSpace Helm Chart ####
+# This is a highly configurable Helm chart. For information on how to configure this file,
+# take a look at the documentation: http://devspace.cloud/docs/chart/basics/devspace-helm-chart
+
+# Components are independently scalable parts of your application
+# Components can contain multiple containers which cannot be scaled independently from each other
+components:
+- name: default
+  containers:
+  - # Image tag will be automatically updated in runtime when running devspace deploy or devspace dev
+    # The name used here has to match the name in .devspace/config.yaml under images.default.image, 
+    # otherwise devspace is not able to replace it!
+    image: smartpcr/devspace
+    resources:
+      limits:
+        cpu: "400m"
+        memory: "500Mi"
+        ephemeralStorage: "1Gi"
+    # Environment variables
+    env: []
+    # Mount persistent volumes in this container
+    volumeMounts: []
+  # Expose your component via service
+  # URLs will be connected if name=external and externalPort=80
+  service:
+    name: external
+    type: ClusterIP
+    ports:
+    - externalPort: 80
+      # This is the container port that should be exposed through this service
+      containerPort: 3000
+
+# Define persistent volumes here
+# Then mount them in containers above
+volumes: []
+
+# Defines image pull secrets
+# DevSpace CLI will append all pull secrets which are automatically created
+# More infos on: https://devspace.cloud/docs/cli/images/pull-secrets
+pullSecrets: []
