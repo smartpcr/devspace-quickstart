@@ -2,3 +2,7 @@ bin/
 obj/
 .vs/
 .idea/
+
+
+# Exclude .devspace generated files
+.devspace/

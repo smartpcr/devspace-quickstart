@@ -1,0 +1,32 @@
+version: v1alpha4
+images:
+  default:
+    image: smartpcr/devspace
+    createPullSecret: true
+deployments:
+- name: devspace-quickstart
+  component:
+    containers:
+    - image: smartpcr/devspace
+    service:
+      ports:
+      - port: 80
+dev:
+  overrideImages:
+  - name: default
+    entrypoint:
+    - sleep
+    - "999999999999"
+  ports:
+  - labelSelector:
+      app.kubernetes.io/component: devspace-quickstart
+    portMappings:
+    - localPort: 80
+      remotePort: 80
+  sync:
+  - labelSelector:
+      app.kubernetes.io/component: devspace-quickstart
+    excludePaths: []
+cluster:
+  kubeContext: ds-dev-xd-k8s-cluster-admin
+  namespace: hello-world
